@@ -1,6 +1,6 @@
 import {calculate,calculate_binary,calculate_unary} from "./calculate.js"
 export function evaluatepostfix(postfix) {
-    const binary_operator = ['+', '-', '*', '/', '%', '^'];
+    const binary_operator = ['+', '-', '*', '/', '%', '^', '%'];
     const unary_operator = ['√', '!', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'abs', 'log', 'ln', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh'];
 
     let stack = [];
@@ -48,6 +48,13 @@ export function evaluatepostfix(postfix) {
                     case '^':
                         ans1 = calc.power();
                         break;
+                    case '%':
+                        if(n2 === 0)
+                        {
+                            throw new Error("Module by 0 is undefined")
+                        }
+                        ans1 = calc.modulus();
+                        break;
                     default:
                         break;
                 }
@@ -68,9 +75,15 @@ export function evaluatepostfix(postfix) {
             try {
                 switch (postfix[i]) {
                     case '√':
+                        if(n<0){
+                            throw new Error("√ of negative number is undefined")
+                        }
                         ans2 = calc.squareroot();
                         break;
                     case '!':
+                        if(n<0){
+                            throw new Error("factorial of negative number is undefined")
+                        }
                         ans2 = calc.factorial();
                         break;
                     case 'sin':
@@ -83,9 +96,15 @@ export function evaluatepostfix(postfix) {
                         ans2 = calc.tan();
                         break;
                     case 'asin':
+                        if(n<-1 || n>1){
+                            throw new Error("invalid input range for sin-1")
+                        }
                         ans2 = calc.asin();
                         break;
                     case 'acos':
+                        if(n<-1 || n>1){
+                            throw new Error("invalid input range for cos-1")
+                        }
                         ans2 = calc.acos();
                         break;
                     case 'atan':
@@ -95,9 +114,15 @@ export function evaluatepostfix(postfix) {
                         ans2 = calc.abs();
                         break;
                     case 'log':
+                        if(n<0){
+                            throw new Error("log of negative number is undefined")
+                        }
                         ans2 = calc.log();
                         break;
                     case 'ln':
+                        if(n<0){
+                            throw new Error("log of negative number is undefined")
+                        }
                         ans2 = calc.ln();
                         break;
                     case 'sinh':

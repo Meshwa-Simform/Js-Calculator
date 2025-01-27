@@ -92,7 +92,7 @@ function toggle_text() {
 
   } else {
     z.innerHTML = "√x";
-    z.value = "√"
+    z.value = "√("
   }
 
   var z = document.getElementById("16");

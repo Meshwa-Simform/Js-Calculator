@@ -14,8 +14,22 @@ buttons.forEach(button => {
         if (value === '=') {
             const input = document.querySelector('input');
             const equation = input.value; 
+            let openCount = 0;
+            let closeCount = 0;
+            for (let char of equation) {
+                if (char === '(') {
+                    openCount++;
+                } else if (char === ')') {
+                    closeCount++;
+                }
+            }
+            if(openCount !== closeCount){
+                document.getElementById("result").innerHTML = "Error: Missmatched brackets";
+                return;
+            }
             if(equation.length === 0){
-                document.getElementById("result").innerHTML = "Enter input";
+                document.getElementById("result").innerHTML = "Error: Enter input";
+                return;
             }
             else{
                 const infix_arr = convert_to_infix(equation);
@@ -23,11 +37,10 @@ buttons.forEach(button => {
                 const Answer = evaluatepostfix(postfix_arr);
                 document.getElementById("result").innerHTML = Answer;
                 history(equation,Answer);
-                console.log(infix_arr,postfix_arr)
             }
         } 
         else {
-        reply(button.id);
+            reply(button.id);
         }
     });
 });
@@ -39,13 +52,30 @@ document.addEventListener('keydown' , (event) => {
     if(key === 'Enter'){
         const input = document.querySelector('input');
         const equation = input.value; 
-        
-        const infix_arr = convert_to_infix(equation);
-        const postfix_arr = convert_to_postfix(infix_arr);
-        const Answer = evaluatepostfix(postfix_arr);
-        document.getElementById("result").innerHTML = Answer;
-        history(equation,Answer);
-        console.log(Answer);
+        let openCount = 0;
+        let closeCount = 0;
+        for (let char of equation) {
+            if (char === '(') {
+                openCount++;
+            } else if (char === ')') {
+                closeCount++;
+            }
+        }
+        if(openCount !== closeCount){
+            document.getElementById("result").innerHTML = "Error: Missmatched brackets";
+            return
+        }
+        if(equation.length === 0){
+            document.getElementById("result").innerHTML = "Error: Enter input";
+            return;
+        }
+        else{
+            const infix_arr = convert_to_infix(equation);
+            const postfix_arr = convert_to_postfix(infix_arr);
+            const Answer = evaluatepostfix(postfix_arr);
+            document.getElementById("result").innerHTML = Answer;
+            history(equation,Answer);
+        }
     }
     else{
         keyboardinput(key);

@@ -25,6 +25,10 @@ function displayHistory() {
 
 // Function to clear history
 function clearHistory() {
+    if(localStorage.length === 0){
+        alert("No history to clear.");
+        return;
+    }
     localStorage.clear();
     key = 0;
     displayHistory(); // Re-display the empty history

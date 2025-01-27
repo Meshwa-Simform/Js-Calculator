@@ -10,7 +10,7 @@ export function keyboardinput(key)
         document.getElementById('result').innerHTML="";
     }
     else if(['Shift','Ctrl','Control','CapsLock','Alt','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'].includes(key)){
-        input.value ;
+        return;
     }
     else{
         input.value += key;
