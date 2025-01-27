@@ -1,5 +1,5 @@
 import {calculate,calculate_binary,calculate_unary} from "./calculate.js"
-export function evaluatepostfix(postfix) {
+export function evaluatepostfix(postfix,unit) {
     const binary_operator = ['+', '-', '*', '/', '%', '^', '%'];
     const unary_operator = ['√', '!', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'abs', 'log', 'ln', 'sinh', 'cosh', 'tanh', 'asinh', 'acosh', 'atanh'];
 
@@ -22,7 +22,7 @@ export function evaluatepostfix(postfix) {
         // Handle binary operations
         else if (binary_operator.includes(postfix[i])) {
             if (stack.length < 2) {
-                return "Error: Not enough operands for binary operator.";
+                return "Error: Invalid Operation";
             }
             let n2 = stack.pop();
             let n1 = stack.pop();
@@ -67,11 +67,15 @@ export function evaluatepostfix(postfix) {
         // Handle unary operators
         else if (unary_operator.includes(postfix[i])) {
             if (stack.length < 1) {
-                return "Error: Not enough operands for unary operator.";
+                return "Error: Invalid operation";
             }
             let n = stack.pop();
             let ans2;
             const calc = new calculate_unary(n);
+            if(unit === 'deg'){
+                n = n * (Math.PI/180);
+            }
+            const calc_trig = new calculate_unary(n);
             try {
                 switch (postfix[i]) {
                     case '√':
@@ -81,34 +85,34 @@ export function evaluatepostfix(postfix) {
                         ans2 = calc.squareroot();
                         break;
                     case '!':
-                        if(n<0){
-                            throw new Error("factorial of negative number is undefined")
+                        if(!Number.isInteger(n) || n<0){
+                            throw new Error("factorial of negative/decimal number is undefined")
                         }
                         ans2 = calc.factorial();
                         break;
                     case 'sin':
-                        ans2 = calc.sin();
+                        ans2 = calc_trig.sin();
                         break;
                     case 'cos':
-                        ans2 = calc.cos();
+                        ans2 = calc_trig.cos();
                         break;
                     case 'tan':
-                        ans2 = calc.tan();
+                        ans2 = calc_trig.tan();
                         break;
                     case 'asin':
                         if(n<-1 || n>1){
                             throw new Error("invalid input range for sin-1")
                         }
-                        ans2 = calc.asin();
+                        ans2 = calc_trig.asin();
                         break;
                     case 'acos':
                         if(n<-1 || n>1){
                             throw new Error("invalid input range for cos-1")
                         }
-                        ans2 = calc.acos();
+                        ans2 = calc_trig.acos();
                         break;
                     case 'atan':
-                        ans2 = calc.atan();
+                        ans2 = calc_trig.atan();
                         break;
                     case 'abs':
                         ans2 = calc.abs();
@@ -126,22 +130,28 @@ export function evaluatepostfix(postfix) {
                         ans2 = calc.ln();
                         break;
                     case 'sinh':
-                        ans2 = calc.sinh();
+                        ans2 = calc_trig.sinh();
                         break;
                     case 'cosh':
-                        ans2 = calc.cosh();
+                        ans2 = calc_trig.cosh();
                         break;
                     case 'tanh':
-                        ans2 = calc.tanh();
+                        ans2 = calc_trig.tanh();
                         break;
                     case 'asinh':
-                        ans2 = calc.asinh();
+                        ans2 = calc_trig.asinh();
                         break;
                     case 'acosh':
-                        ans2 = calc.acosh();
+                        if(n<1){
+                            throw new Error("invalid input range for acosh-1")
+                        }
+                        ans2 = calc_trig.acosh();
                         break;
                     case 'atanh':
-                        ans2 = calc.atanh();
+                        if(n<-1 || n>1){
+                            throw new Error("invalid input range for atanh-1")
+                        }
+                        ans2 = calc_trig.atanh();
                         break;
                     default:
                         break;

@@ -92,6 +92,7 @@ input {
     align-self: flex-start;
     font-weight: bolder;
     padding-top: 5px;
+    color: black;
 }
 
 .history-view{
@@ -110,6 +111,7 @@ input {
     justify-content: flex-start;
     overflow-y : auto;
     max-width: 100%;
+    color: black;
 }
 h4{
     color: green;

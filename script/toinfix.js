@@ -14,10 +14,17 @@ export function convert_to_infix(equation) {
             }
 
             // Handle negative sign at the beginning or after operators
-            if (char === '-' && (i === 0 || ['+', '-', '*', '/', '(', '^'].includes(equation[i - 1]))) {
+            if (char === '-' && i === 0) {
                 infix_arr.push('0'); 
                 infix_arr.push(char);
-            } 
+            }
+            if(char === '-' &&  ['+', '*', '/', '(', '^'].includes(equation[i - 1]))
+            {
+                temp_num += char;
+            }
+            else if(char === 'x'){
+                infix_arr.push('*')
+            }
             // Handle functions like sin, cos, tan, abs, log, ln
             else if (char === 's' && equation[i + 1] === 'i' && equation[i + 3] === '(') {
                 infix_arr.push('sin');

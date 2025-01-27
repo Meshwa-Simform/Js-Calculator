@@ -5,6 +5,7 @@ import { convert_to_postfix } from "./topostfix.js";
 import { evaluatepostfix } from "./evaluatepostfix.js";
 import { history , displayHistory  } from "./history.js";
 
+let unit;
 // Event Listner for onlick input
 const buttons = document.querySelectorAll('button');
 buttons.forEach(button => {
@@ -34,13 +35,14 @@ buttons.forEach(button => {
             else{
                 const infix_arr = convert_to_infix(equation);
                 const postfix_arr = convert_to_postfix(infix_arr);
-                const Answer = evaluatepostfix(postfix_arr);
+                const Answer = evaluatepostfix(postfix_arr,unit);
                 document.getElementById("result").innerHTML = Answer;
                 history(equation,Answer);
+                console.log(infix_arr,postfix_arr,unit)
             }
         } 
         else {
-            reply(button.id);
+            unit = reply(button.id,unit);
         }
     });
 });

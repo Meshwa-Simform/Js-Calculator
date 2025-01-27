@@ -1,27 +1,65 @@
 import { clearHistory } from "./history.js";
 
-export function reply(clicked_id)
+export function reply(clicked_id,unit)
 {
     var input = document.querySelector('input');
 
     var value = document.getElementById(clicked_id).getAttribute("value");
     
     if(value === 'nd'){
-        toggle_text();
+      toggle_text();
     }
     else if(value === 'cl'){
-        input.value = '';
-        document.getElementById('result').innerHTML="";
+      input.value = '';
+      document.getElementById('result').innerHTML="";
     }
     else if(value === 'bs'){
-        input.value = input.value.slice(0,-1);
+      const functions = ['asin(', 'acos(', 'atan(', 'sin(', 'cos(', 'tan(', 'asinh(', 'acosh(', 'atanh(', 'sinh(', 'cosh(', 'tanh(', 'log(', 'ln(', 'abs(','^2','√(','^(','(-','^3'];
+      for (const func of functions) {
+          if (input.value.endsWith(func)) {
+              input.value = input.value.slice(0, -func.length);
+              return; 
+          }
+      }
+      // If no function match is found, remove the last character
+      input.value = input.value.slice(0, -1);      
     }
     else if(clicked_id === 'clear-history'){
       clearHistory();
     }
+    else if(value === 'deg' || value === 'rad'){
+      toggle_unit();
+      unit = value;
+    }
+    else if(input.value === '' && ['+','-','x','*','/','%','^(','^2','!','^3'].includes(value)){
+      alert("Invalid format used");
+    }
+    else if(input.value.charAt(input.value.length - 1) === '(' && ['x','*','/','%','^(','^2','!','^3'].includes(value)){
+      alert("Invalid format used");
+    }
+    else if(input.value === '' && value === '.'){
+      input.value += 0;
+      input.value += value;
+    }
+    else if(input.value.charAt(input.value.length - 1) === ')' && ['sin(','cos(','tan(','√','(','log(','ln(','(-','asin(','acos(','atan(','sinh(','cosh(','tanh(','asinh(','acosh(','atanh(','0','1','2','3','4','5','6','7','8','9'].includes(value)){
+      input.value += 'x'
+      input.value += value;
+    }
     else{
         input.value += value;
     }
+  return unit;
+}
+function toggle_unit() {
+  var x = document.getElementById("10");
+  if (x.innerHTML === "deg") {
+    x.innerHTML = "rad";
+    x.value = "rad";
+
+  } else if(x.innerHTML === "rad"){
+    x.innerHTML = "deg";
+    x.value = "deg";
+  }
 }
 //togle fuction to toggle buttons when 2nd is clicked
 function toggle_text() {
@@ -43,6 +81,17 @@ function toggle_text() {
   } else {
     x.innerHTML = "e";
     x.value = "e";
+  }
+
+  var x = document.getElementById("10");
+  if (x.innerHTML === "%") {
+    x.innerHTML = "deg";
+    x.value = "deg";
+
+  }
+  else {
+    x.innerHTML = "%";
+    x.value = "%";
   }
 
   var x = document.getElementById("7");

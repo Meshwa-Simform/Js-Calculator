@@ -12,7 +12,46 @@ export function convert_to_postfix(infix_arr) {
         let stack = [];
         let postfix = [];
         let temp_num = '';  // Temporary storage for multi-digit numbers or decimals
-
+        for(let i = 0; i < infix_arr.length; i++){
+            let char = infix_arr[i];
+            if(infix_arr[i] === '-' && infix_arr[i+1] === '+'){
+                infix_arr.splice(i+1,1);
+            }
+            if(infix_arr[i] === '-' && infix_arr[i+1] === '-'){
+                infix_arr.splice(i,2,"+");
+            }
+            if(infix_arr[i] === '+' && infix_arr[i+1] === '+'){
+                document.getElementById("result").innerHTML = "Error: Two + cannot be together";
+                return;
+            }
+            if(infix_arr[i] === '^' && infix_arr[i+1] === '(' && infix_arr[i+1] === '^'){
+                document.getElementById("result").innerHTML = "Error: Two ^ cannot be together";
+                return;
+            }
+            if((infix_arr[i] === '/' && infix_arr[i+1] === '/') || (infix_arr[i] === '*' && infix_arr[i+1] === '*')|| (infix_arr[i] === '%' && infix_arr[i+1] === '%')){
+                document.getElementById("result").innerHTML = `Error: Two ${char} cannot be together`;
+                return;
+            }
+            if(!isNaN(infix_arr[i]) && infix_arr[i+1]==='('){
+                infix_arr.splice(i+1,0,'*');
+                i++;
+            }
+            if(infix_arr[i]==='(' && infix_arr[i+1]===')'){
+                document.getElementById("result").innerHTML = "Error: Empty Parentheses";
+                return;
+            }
+            if(!isNaN(infix_arr[i]) && ['e','π','√','sin','cos','tan','asin','acos','atan','abs','log','ln','sinh','cosh','tanh','asinh','acosh','atanh'].includes(infix_arr[i+1])){
+                infix_arr.splice(i+1,0,'*');
+                i++;
+            }
+            if (infix_arr[i] === '+' && i === 0) {
+                infix_arr.unshift('0'); 
+            }
+            if (infix_arr[i] === '(' && infix_arr[i+1]==='+') {
+                infix_arr.splice(i+1,0,'0'); 
+                i++;
+            }
+        }
         for (let i = 0; i < infix_arr.length; i++) {
             let char = infix_arr[i];
 
