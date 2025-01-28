@@ -38,7 +38,6 @@ buttons.forEach(button => {
                 const Answer = evaluatepostfix(postfix_arr,unit);
                 document.getElementById("result").innerHTML = Answer;
                 history(equation,Answer);
-                console.log(infix_arr,postfix_arr,unit)
             }
         } 
         else {

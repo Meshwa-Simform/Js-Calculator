@@ -47,7 +47,7 @@ export function convert_to_postfix(infix_arr) {
             if (infix_arr[i] === '+' && i === 0) {
                 infix_arr.unshift('0'); 
             }
-            if (infix_arr[i] === '(' && infix_arr[i+1]==='+') {
+            if (infix_arr[i] === '(' && (infix_arr[i+1]==='+' || infix_arr[i+1]==='-') ){
                 infix_arr.splice(i+1,0,'0'); 
                 i++;
             }
