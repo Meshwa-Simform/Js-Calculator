@@ -1,11 +1,12 @@
 let key = localStorage.length;
-// Function to save history inlocal storage
-function history(equation , Answer){
+
+// Function to save history in local storage
+function history(equation, Answer) {
     let data = {
-        equation ,
+        equation,
         Answer
     }
-    localStorage.setItem(key , JSON.stringify(data));
+    localStorage.setItem(`history_${key}`, JSON.stringify(data));
     key++;
 }
 
@@ -15,25 +16,31 @@ function displayHistory() {
     historyContent.innerHTML = ''; // Clear previous history content
 
     for (let i = 0; i < localStorage.length; i++) {
-        let historyItem = JSON.parse(localStorage.getItem(i));
-        let historyEntry = document.createElement('div');
-        historyEntry.innerHTML = `<p>${historyItem.equation} = </p><h4>${historyItem.Answer}</h4>`;
-        historyContent.appendChild(historyEntry);
+        let key = localStorage.key(i);
+        if (key.startsWith('history_')) {
+            let historyItem = JSON.parse(localStorage.getItem(key));
+            let historyEntry = document.createElement('div');
+            historyEntry.innerHTML = `<p>${historyItem.equation} = </p><h4>${historyItem.Answer}</h4>`;
+            historyContent.appendChild(historyEntry);
+        }
     }
     historyContent.scrollTop = historyContent.scrollHeight;
 }
 
 // Function to clear history
 function clearHistory() {
-    if(localStorage.length === 0){
+    if (localStorage.length === 0) {
         alert("No history to clear.");
         return;
     }
-    localStorage.clear();
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+        let key = localStorage.key(i);
+        if (key.startsWith('history_')) {
+            localStorage.removeItem(key);
+        }
+    }
     key = 0;
     displayHistory(); // Re-display the empty history
 }
 
-
-
-export { history , displayHistory , clearHistory};
+export { history, displayHistory, clearHistory };
